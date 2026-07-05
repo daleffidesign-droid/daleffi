@@ -13,12 +13,15 @@ model User {
     name          String
     email         String    @unique
     emailVerified Boolean
+    role          String    @default("guest")
+    banned        Boolean   @default(false)
+    banReason     String?
+    banExpires    DateTime?  
     image         String?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
     phoneNumber   String?
     cpf           String?   @unique
-    role          String    @default("guest")
     accounts      Account[]
     sessions      Session[]
 
@@ -71,4 +74,44 @@ model Verification {
 
     @@index([identifier])
     @@map("verification")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("category")
+}
+
+model Product {
+  id               String         @id @default(uuid())
+  title            String
+  description      String
+  price            Decimal        @db.Decimal(10, 2)
+  active           Boolean        @default(true)
+  mercadoLivreLink String?
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  images           ProductImage[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@map("product")
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  path      String
+  order     Int      @default(0)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@map("product_image")
 }

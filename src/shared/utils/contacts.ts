@@ -1,0 +1,1 @@
+export const contactPhoneNumber = "5527988567724"
