@@ -72,7 +72,7 @@ export function MainSidebar() {
             className="h-6 w-auto"
           />
           <div className="group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-semibold leading-none">Builtropy</p>
+            <p className="text-sm font-semibold leading-none">Daleffi</p>
             <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
               Admin Panel
             </p>

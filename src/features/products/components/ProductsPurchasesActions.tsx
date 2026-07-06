@@ -1,8 +1,8 @@
 "use client";
 
-import { MessageCircle, ShoppingBag } from "lucide-react";
 import { Button } from "@/src/shared/components/ui/button";
 import { buildWhatsAppOrderLink } from "@/src/shared/utils/whatsapp";
+import Image from "next/image";
 
 export function ProductPurchaseActions({
   product,
@@ -16,14 +16,19 @@ export function ProductPurchaseActions({
   const whatsappLink = buildWhatsAppOrderLink(product);
 
   return (
-    <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+    <div className="mt-2 flex flex-col gap-3">
       <Button
         size="lg"
-        className="flex-1 bg-[#25D366] text-white hover:bg-[#1ea952]"
+        className="flex-1 py-2 bg-[#25D366] text-white hover:bg-[#1ea952]"
         render={
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-            <MessageCircle className="h-4 w-4" />
-            Comprar pelo WhatsApp
+            <Image
+              src="/logos/whatsapp-logo.png"
+              height={20}
+              width={20}
+              alt="WhatsApp"
+            />
+            <p className="font-bold">WhatsApp</p>
           </a>
         }
       />
@@ -32,15 +37,19 @@ export function ProductPurchaseActions({
         <Button
           size="lg"
           variant="outline"
-          className="flex-1"
+          className="flex-1 py-2 bg-[#FFE600] hover:bg-[#FFE600]/80 text-[#2F3476] font-bold"
           render={
             <a
               href={product.mercadoLivreLink}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <ShoppingBag className="h-4 w-4" />
-              Comprar no Mercado Livre
+              <Image
+                src="/logos/ml-logo.svg"
+                height={80}
+                width={80}
+                alt="Mercado Livre"
+              />
             </a>
           }
         />

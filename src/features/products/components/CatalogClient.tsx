@@ -118,10 +118,9 @@ export function CatalogClient({
       ) : (
         <div
           className={cn(
-            "relative shrink-0 bg-muted",
             view === "grid"
-              ? "aspect-square w-full"
-              : "h-32 w-32 shrink-0 sm:h-40 sm:w-40",
+              ? "grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4"
+              : "flex flex-col gap-3",
           )}
         >
           {filteredProducts.map((product) => (

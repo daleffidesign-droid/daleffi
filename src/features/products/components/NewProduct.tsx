@@ -22,7 +22,7 @@ export function NewProductDialog({ categories }: NewProductDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button className="bg-[var(--gold)] text-[var(--gold-foreground)] hover:bg-[var(--gold-hover)]">
           <Plus className="mr-2 h-4 w-4" />
           Novo produto

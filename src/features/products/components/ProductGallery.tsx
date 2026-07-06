@@ -17,33 +17,33 @@ export function ProductGallery({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-muted">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-muted sm:aspect-square lg:aspect-[4/5]">
         {activeImage ? (
           <Image
             src={activeImage.url}
             alt={title}
             fill
-            sizes="(max-width: 640px) 100vw, 50vw"
+            sizes="(max-width: 1024px) 100vw, 60vw"
             className="object-cover"
             priority
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ImageIcon className="h-12 w-12 text-muted-foreground/40" />
+            <ImageIcon className="h-14 w-14 text-muted-foreground/40" />
           </div>
         )}
       </div>
 
       {images.length > 1 && (
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-2 sm:grid-cols-6">
           {images.map((image, index) => (
             <button
               key={image.url + index}
               type="button"
               onClick={() => setActiveIndex(index)}
               className={cn(
-                "relative aspect-square overflow-hidden rounded-md bg-muted ring-2 ring-transparent transition",
-                index === activeIndex && "ring-foreground"
+                "relative aspect-square overflow-hidden rounded-lg bg-muted ring-2 ring-transparent transition",
+                index === activeIndex && "ring-foreground",
               )}
             >
               <Image

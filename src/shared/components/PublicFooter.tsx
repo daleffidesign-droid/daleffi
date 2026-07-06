@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ImageDown, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "@/src/shared/components/ui/utils/cn";
 
 const currentYear = new Date().getFullYear();
@@ -152,7 +152,7 @@ export function PublicFooter({
             </span>
 
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/daleffi_desing"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -162,7 +162,6 @@ export function PublicFooter({
                   : "text-foreground/70 hover:text-[var(--gold)]"
               )}
             >
-              <ImageDown className="h-4 w-4" />
               @daleffidesign
             </a>
           </div>

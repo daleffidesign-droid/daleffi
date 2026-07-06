@@ -1,4 +1,5 @@
 import { PublicFooter } from "@/src/shared/components/PublicFooter";
+import PublicHeader from "@/src/shared/components/PublicHeader";
 
 export default function PublicLayout({
   children,
@@ -7,7 +8,8 @@ export default function PublicLayout({
 }) {
   return (
     <body suppressHydrationWarning>
-      {children}
+      <PublicHeader />
+      <div className="mt-16">{children}</div>
       <PublicFooter />
     </body>
   );

@@ -40,7 +40,7 @@ export default async function ProductDetailPage({
   });
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <Link
         href="/catalogo"
         className="mb-6 inline-flex items-center gap-1.5 text-muted-foreground text-sm hover:text-foreground"
@@ -49,38 +49,74 @@ export default async function ProductDetailPage({
         Voltar ao catálogo
       </Link>
 
-      <div className="grid gap-8 sm:grid-cols-2">
-        <ProductGallery
-          images={serializedProduct.images}
-          title={serializedProduct.title}
-        />
+      <div className="grid gap-8 lg:grid-cols-[1fr_340px] lg:gap-12">
+        {/* Coluna principal: imagem + título + descrição */}
+        <div className="flex flex-col gap-6">
+          <ProductGallery
+            images={serializedProduct.images}
+            title={serializedProduct.title}
+          />
 
-        <div className="flex flex-col gap-4">
-          <div>
-            <Badge variant="secondary" className="mb-2">
+          <div className="flex flex-col gap-3">
+            <Badge variant="secondary" className="w-fit">
               {serializedProduct.category.name}
             </Badge>
             <h1 className="font-display text-2xl text-foreground sm:text-3xl">
               {serializedProduct.title}
             </h1>
+
+            {/* Preço visível no mobile, logo abaixo do título */}
+            <p className="font-semibold text-2xl text-foreground lg:hidden">
+              {currencyFormatter.format(Number(serializedProduct.price))}
+            </p>
+
+            <p className="whitespace-pre-line text-muted-foreground text-sm leading-relaxed sm:text-base">
+              {serializedProduct.description}
+            </p>
+
+            {/* Botões de compra no mobile, no final do fluxo */}
+            <div className="lg:hidden">
+              <ProductPurchaseActions
+                product={{
+                  title: serializedProduct.title,
+                  price: serializedProduct.price,
+                  mercadoLivreLink: serializedProduct.mercadoLivreLink,
+                }}
+              />
+            </div>
           </div>
-
-          <p className="font-semibold text-2xl text-foreground sm:text-3xl">
-            {currencyFormatter.format(Number(serializedProduct.price))}
-          </p>
-
-          <p className="whitespace-pre-line text-muted-foreground text-sm leading-relaxed sm:text-base">
-            {serializedProduct.description}
-          </p>
-
-          <ProductPurchaseActions
-            product={{
-              title: serializedProduct.title,
-              price: serializedProduct.price,
-              mercadoLivreLink: serializedProduct.mercadoLivreLink,
-            }}
-          />
         </div>
+
+        {/* Sidebar: só aparece no desktop, sticky */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 flex flex-col gap-5 rounded-xl border border-border bg-card p-6">
+            <div>
+              <Badge variant="secondary" className="mb-2">
+                {serializedProduct.category.name}
+              </Badge>
+              <h2 className="font-display text-lg text-foreground">
+                {serializedProduct.title}
+              </h2>
+            </div>
+
+            <p className="font-semibold text-3xl text-foreground">
+              {currencyFormatter.format(Number(serializedProduct.price))}
+            </p>
+
+            <ProductPurchaseActions
+              product={{
+                title: serializedProduct.title,
+                price: serializedProduct.price,
+                mercadoLivreLink: serializedProduct.mercadoLivreLink,
+              }}
+            />
+
+            <p className="text-muted-foreground text-xs leading-relaxed">
+              Ao clicar em comprar, você será direcionado para finalizar o
+              pedido diretamente com a loja.
+            </p>
+          </div>
+        </aside>
       </div>
     </div>
   );
