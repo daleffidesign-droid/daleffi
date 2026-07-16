@@ -8,6 +8,7 @@ import type { z } from "zod";
 import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
 import { Textarea } from "@/src/shared/components/ui/textarea";
+import { Switch } from "@/src/shared/components/ui/switch";
 import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
 import {
   Form,
@@ -47,10 +48,6 @@ export function ProductForm({ categories, onSuccess }: ProductFormProps) {
   const [isPending, startTransition] = useTransition();
   const [formError, setFormError] = useState<string | null>(null);
 
-  // 3 generics do useForm: entrada (antes do z.coerce), contexto, saída
-  // (depois do coerce/refine). Sem isso, o TS trava porque o zodResolver
-  // enxerga "price" como unknown na entrada e number na saída, e o
-  // useForm<ProductFormValues> só aceitava um dos dois tipos.
   const form = useForm<
     z.input<typeof productFormSchema>,
     unknown,
@@ -65,6 +62,7 @@ export function ProductForm({ categories, onSuccess }: ProductFormProps) {
       newCategoryName: "",
       mercadoLivreLink: "",
       images: [],
+      featured: false, // 👈
     },
   });
 
@@ -229,6 +227,28 @@ export function ProductForm({ categories, onSuccess }: ProductFormProps) {
                 />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="featured"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border border-border p-3">
+              <div className="flex flex-col gap-0.5">
+                <FormLabel htmlFor="featured">Destaque</FormLabel>
+                <FormDescription>
+                  Exibir este produto no carrossel da home
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  id="featured"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

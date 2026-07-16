@@ -1,3 +1,4 @@
+// src/features/products/components/EditProductDialog.tsx
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
@@ -12,8 +13,11 @@ import { Input } from "@/src/shared/components/ui/input";
 import { Textarea } from "@/src/shared/components/ui/textarea";
 import { Label } from "@/src/shared/components/ui/label";
 import { Button } from "@/src/shared/components/ui/button";
+import { Switch } from "@/src/shared/components/ui/switch";
 import { toast } from "sonner";
 import { updateProductAction } from "../actions/update-products";
+import { ProductImageUploader } from "./ImageUploader";
+import type { ProductImageValue } from "@/src/shared/schemas/product-schema";
 
 type Category = { id: string; name: string };
 
@@ -25,6 +29,8 @@ type EditableProduct = {
   categoryId: string;
   mercadoLivreLink: string | null;
   category: Category;
+  images: ProductImageValue[];
+  featured: boolean;
 };
 
 export function EditProductDialog({
@@ -43,6 +49,8 @@ export function EditProductDialog({
     price: product.price,
     categoryId: product.categoryId,
     mercadoLivreLink: product.mercadoLivreLink ?? "",
+    images: product.images,
+    featured: product.featured,
   });
 
   useEffect(() => {
@@ -54,6 +62,8 @@ export function EditProductDialog({
         price: product.price,
         categoryId: product.categoryId,
         mercadoLivreLink: product.mercadoLivreLink ?? "",
+        images: product.images,
+        featured: product.featured,
       });
     }
   }, [open, product]);
@@ -67,6 +77,8 @@ export function EditProductDialog({
         price: Number(form.price),
         categoryId: form.categoryId,
         mercadoLivreLink: form.mercadoLivreLink,
+        images: form.images,
+        featured: form.featured,
       });
 
       if (result.success) {
@@ -128,6 +140,30 @@ export function EditProductDialog({
                 setForm({ ...form, mercadoLivreLink: e.target.value })
               }
               placeholder="https://..."
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label>Imagens</Label>
+            <ProductImageUploader
+              value={form.images}
+              onChange={(next) => setForm({ ...form, images: next })}
+            />
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg border border-border p-3">
+            <div className="flex flex-col gap-0.5">
+              <Label htmlFor="featured">Destaque</Label>
+              <p className="text-muted-foreground text-xs">
+                Exibir este produto no carrossel da home
+              </p>
+            </div>
+            <Switch
+              id="featured"
+              checked={form.featured}
+              onCheckedChange={(checked) =>
+                setForm({ ...form, featured: checked })
+              }
             />
           </div>
         </div>

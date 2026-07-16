@@ -44,7 +44,9 @@ export function ProductImageUploader({
       (file) => !ACCEPTED_TYPES.includes(file.type),
     );
     if (invalidFile) {
-      setError("Use apenas imagens JPG, PNG ou WebP.");
+      setError(
+        `"${invalidFile.name}" não é um formato aceito (use JPG, PNG ou WebP).`,
+      );
       return;
     }
 
@@ -52,7 +54,9 @@ export function ProductImageUploader({
       (file) => file.size > MAX_SIZE_MB * 1024 * 1024,
     );
     if (oversizedFile) {
-      setError(`Cada imagem deve ter no máximo ${MAX_SIZE_MB}MB.`);
+      setError(
+        `"${oversizedFile.name}" tem ${(oversizedFile.size / 1024 / 1024).toFixed(1)}MB — o máximo é ${MAX_SIZE_MB}MB.`,
+      );
       return;
     }
 
@@ -69,15 +73,36 @@ export function ProductImageUploader({
           .from(BUCKET)
           .upload(path, file, { cacheControl: "3600", upsert: false });
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error(
+            `[ProductImageUploader] Falha ao enviar "${file.name}":`,
+            uploadError,
+          );
+          throw new Error(
+            `Falha ao enviar "${file.name}": ${uploadError.message}`,
+          );
+        }
 
         const { data } = supabaseClient.storage.from(BUCKET).getPublicUrl(path);
+
+        if (!data?.publicUrl) {
+          throw new Error(
+            `Upload de "${file.name}" concluído, mas não foi possível gerar a URL pública.`,
+          );
+        }
+
         uploaded.push({ url: data.publicUrl, path });
       }
 
       onChange([...value, ...uploaded]);
-    } catch {
-      setError("Não foi possível enviar uma ou mais imagens. Tente novamente.");
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Não foi possível enviar uma ou mais imagens. Tente novamente.";
+
+      console.error("[ProductImageUploader] Upload falhou:", err);
+      setError(message);
     } finally {
       setIsUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -86,8 +111,17 @@ export function ProductImageUploader({
 
   function handleRemove(path: string) {
     onChange(value.filter((image) => image.path !== path));
-    // best-effort: remove do storage também, sem travar a UI se falhar
-    void supabaseClient.storage.from(BUCKET).remove([path]);
+    void supabaseClient.storage
+      .from(BUCKET)
+      .remove([path])
+      .then(({ error: removeError }) => {
+        if (removeError) {
+          console.error(
+            "[ProductImageUploader] Falha ao remover do storage:",
+            removeError,
+          );
+        }
+      });
   }
 
   return (

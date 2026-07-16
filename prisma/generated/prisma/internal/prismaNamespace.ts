@@ -1048,6 +1048,8 @@ export const ProductScalarFieldEnum = {
   price: 'price',
   active: 'active',
   mercadoLivreLink: 'mercadoLivreLink',
+  featured: 'featured',
+  featuredOrder: 'featuredOrder',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

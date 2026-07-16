@@ -26,7 +26,6 @@ export async function createProduct(input: ProductFormValues) {
     const name = data.newCategoryName!.trim();
     const slug = slugify(name);
 
-    // upsert: se duas pessoas criarem "Poltronas" ao mesmo tempo, não duplica
     const category = await db.category.upsert({
       where: { slug },
       update: {},
@@ -43,6 +42,7 @@ export async function createProduct(input: ProductFormValues) {
       price: data.price,
       mercadoLivreLink: data.mercadoLivreLink || null,
       categoryId,
+      featured: data.featured,
       images: {
         create: data.images.map((image, index) => ({
           url: image.url,

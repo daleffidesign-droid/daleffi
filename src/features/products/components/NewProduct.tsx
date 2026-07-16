@@ -22,12 +22,14 @@ export function NewProductDialog({ categories }: NewProductDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-[var(--gold)] text-[var(--gold-foreground)] hover:bg-[var(--gold-hover)]">
-          <Plus className="mr-2 h-4 w-4" />
-          Novo produto
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button className="bg-[var(--gold)] text-[var(--gold-foreground)] hover:bg-[var(--gold-hover)]">
+            <Plus className="mr-2 h-4 w-4" />
+            Novo produto
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Novo produto</DialogTitle>

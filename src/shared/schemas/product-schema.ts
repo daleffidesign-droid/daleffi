@@ -8,29 +8,16 @@ export const productImageSchema = z.object({
   path: z.string().min(1),
 });
 
-export const productFormSchema = z
-  .object({
-    title: z.string().min(2, "Informe um título"),
-    description: z.string().min(10, "Descreva o produto com mais detalhes"),
-    price: z.coerce
-      .number({ message: "Informe um preço válido" })
-      .positive("O preço deve ser maior que zero"),
-    categoryId: z.string().min(1, "Selecione uma categoria"),
-    newCategoryName: z.string().optional(),
-    mercadoLivreLink: z
-      .string()
-      .url("Informe uma URL válida")
-      .optional()
-      .or(z.literal("")),
-    images: z
-      .array(productImageSchema)
-      .max(MAX_PRODUCT_IMAGES, `Máximo de ${MAX_PRODUCT_IMAGES} imagens`),
-  })
-  .refine(
-    (data) =>
-      data.categoryId !== NEW_CATEGORY_VALUE || !!data.newCategoryName?.trim(),
-    { message: "Informe o nome da nova categoria", path: ["newCategoryName"] },
-  );
+export const productFormSchema = z.object({
+  title: z.string().min(1, "Título obrigatório"),
+  description: z.string().min(1, "Descrição obrigatória"),
+  price: z.coerce.number().positive("Preço deve ser maior que zero"),
+  categoryId: z.string(),
+  newCategoryName: z.string().optional(),
+  mercadoLivreLink: z.string().url().optional().or(z.literal("")),
+  images: z.array(productImageSchema),
+  featured: z.boolean().default(false),
+});
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 export type ProductImageValue = z.infer<typeof productImageSchema>;

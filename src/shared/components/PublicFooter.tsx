@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "@/src/shared/components/ui/utils/cn";
+import { contactPhoneNumber } from "../utils/contacts";
 
 const currentYear = new Date().getFullYear();
 const companyCnpj = "65.868.723/0001-52";
@@ -116,7 +117,7 @@ export function PublicFooter({
           {/* Contato */}
           <div className="flex flex-col gap-3 sm:items-end">
             <a
-              href="tel:+5500000000000"
+              href={`tel:${contactPhoneNumber}`}
               className={cn(
                 "inline-flex items-center gap-2 text-sm transition-colors",
                 isDark
@@ -125,7 +126,7 @@ export function PublicFooter({
               )}
             >
               <Phone className="h-4 w-4" />
-              (00) 00000-0000
+              {contactPhoneNumber}
             </a>
 
             <a

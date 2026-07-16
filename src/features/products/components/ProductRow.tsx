@@ -44,7 +44,8 @@ type ProductRowData = {
   categoryId: string;
   mercadoLivreLink: string | null;
   category: { id: string; name: string };
-  images: { url: string }[];
+  images: { url: string; path: string }[];
+  featured: boolean;
 };
 
 const currencyFormatter = new Intl.NumberFormat("pt-BR", {

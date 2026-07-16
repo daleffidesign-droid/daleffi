@@ -6,6 +6,11 @@ import { z } from "zod";
 
 const PRODUCTS_PATH = "/products";
 
+const productImageSchema = z.object({
+  url: z.string().url(),
+  path: z.string(),
+});
+
 const updateProductSchema = z.object({
   id: z.string().uuid(),
   title: z.string().min(1, "Título obrigatório"),
@@ -13,6 +18,8 @@ const updateProductSchema = z.object({
   price: z.coerce.number().positive("Preço deve ser maior que zero"),
   categoryId: z.string().uuid("Categoria inválida"),
   mercadoLivreLink: z.string().url().optional().or(z.literal("")),
+  images: z.array(productImageSchema).default([]),
+  featured: z.boolean().default(false),
 });
 
 export type ActionResult =
@@ -32,7 +39,7 @@ export async function deleteProductAction(id: string): Promise<ActionResult> {
 
 export async function toggleProductStatusAction(
   id: string,
-  active: boolean
+  active: boolean,
 ): Promise<ActionResult> {
   try {
     await db.product.update({
@@ -48,7 +55,7 @@ export async function toggleProductStatusAction(
 }
 
 export async function updateProductAction(
-  input: z.infer<typeof updateProductSchema>
+  input: z.infer<typeof updateProductSchema>,
 ): Promise<ActionResult> {
   const parsed = updateProductSchema.safeParse(input);
 
@@ -59,20 +66,45 @@ export async function updateProductAction(
     };
   }
 
-  const { id, title, description, price, categoryId, mercadoLivreLink } =
-    parsed.data;
+  const {
+    id,
+    title,
+    description,
+    price,
+    categoryId,
+    mercadoLivreLink,
+    images,
+    featured,
+  } = parsed.data;
 
   try {
-    await db.product.update({
-      where: { id },
-      data: {
-        title,
-        description,
-        price,
-        categoryId,
-        mercadoLivreLink: mercadoLivreLink || null,
-      },
+    await db.$transaction(async (tx) => {
+      await tx.product.update({
+        where: { id },
+        data: {
+          title,
+          description,
+          price,
+          categoryId,
+          mercadoLivreLink: mercadoLivreLink || null,
+          featured,
+        },
+      });
+
+      // substitui as imagens pela lista atual, preservando a ordem
+      await tx.productImage.deleteMany({ where: { productId: id } });
+      if (images.length > 0) {
+        await tx.productImage.createMany({
+          data: images.map((image, index) => ({
+            productId: id,
+            url: image.url,
+            path: image.path,
+            order: index,
+          })),
+        });
+      }
     });
+
     revalidatePath(PRODUCTS_PATH);
     return { success: true };
   } catch (error) {

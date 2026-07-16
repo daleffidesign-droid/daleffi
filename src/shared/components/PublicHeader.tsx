@@ -10,15 +10,12 @@ export default function PublicHeader() {
         <Link href="/">
           <div className="flex items-center gap-2.5">
             <Image
-              src="/assets/logo.png"
+              src="/logos/logo-extenso.png"
               width={36}
               height={36}
               alt="Daleffi Design"
-              className="h-9 w-9 rounded-full"
+              className="h-15 w-30 rounded-full"
             />
-            <span className="font-display text-lg tracking-wide text-white">
-              Daleffi <span className="text-[var(--gold)]">Design</span>
-            </span>
           </div>
         </Link>
         <nav className="hidden items-center gap-8 sm:flex">
