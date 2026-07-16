@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-// src/features/security/components/UserSessionsCard.tsx
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
