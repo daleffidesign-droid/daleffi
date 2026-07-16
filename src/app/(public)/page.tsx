@@ -10,6 +10,7 @@ import {
 import { Button } from "@/src/shared/components/ui/button";
 import { getFeaturedProducts } from "@/src/features/products/actions/get-featured-products";
 import { FeaturedCarousel } from "@/src/features/products/components/FeaturedCarousel";
+import { contactPhoneNumber } from "@/src/shared/utils/contacts";
 
 const HIGHLIGHTS = [
   {
@@ -34,6 +35,10 @@ const HIGHLIGHTS = [
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
+
+  const whatsappHref = `https://wa.me/55${contactPhoneNumber}?text=${encodeURIComponent(
+    "Olá! Vi o site da Daleffi e gostaria de mais informações.",
+  )}`;
 
   return (
     <div className="flex flex-1 flex-col bg-black text-white">
@@ -72,10 +77,14 @@ export default async function Home() {
               variant="outline"
               className="border-white/20 text-black hover:bg-white/5"
               render={
-                <Link href="#contato">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="h-4 w-4" />
-                  Entre em contato
-                </Link>
+                  Fale no WhatsApp
+                </a>
               }
             />
           </div>
@@ -114,7 +123,6 @@ export default async function Home() {
       <section id="sobre" className="border-b border-white/10 py-20 sm:py-28">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-            {/* Coluna esquerda: número + abertura */}
             <div className="flex flex-col gap-6">
               <span className="font-display text-7xl leading-none text-[var(--gold)]/20 sm:text-8xl">
                 15
@@ -129,7 +137,6 @@ export default async function Home() {
               </div>
             </div>
 
-            {/* Coluna direita: narrativa */}
             <div className="flex flex-col gap-6 text-sm leading-relaxed text-white/60 sm:text-base">
               <p>
                 A Daleffi nasceu de forma orgânica, movida pela paixão pelo
@@ -147,7 +154,6 @@ export default async function Home() {
                 mas criar peças com personalidade, beleza e funcionalidade.
               </p>
 
-              {/* Card do designer */}
               <div className="flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-6">
                 <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-[var(--gold)]/10">
                   <PenTool className="h-5 w-5 text-[var(--gold)]" />
@@ -185,7 +191,6 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Highlights */}
           <div className="mt-16 grid gap-6 sm:grid-cols-3">
             {HIGHLIGHTS.map((item) => (
               <div
@@ -230,17 +235,19 @@ export default async function Home() {
               variant="outline"
               className="border-white/20 text-black hover:bg-white/5"
               render={
-                <Link href="#contato">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="h-4 w-4" />
-                  Entre em contato
-                </Link>
+                  Fale no WhatsApp
+                </a>
               }
             />
           </div>
         </div>
       </section>
-
-      {/* Contato / Footer */}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { PublicFooter } from "@/src/shared/components/PublicFooter";
 import PublicHeader from "@/src/shared/components/PublicHeader";
+import { FloatingWhatsAppButton } from "@/src/shared/components/FloatingWhatsAppButton";
 
 export default function PublicLayout({
   children,
@@ -11,6 +12,7 @@ export default function PublicLayout({
       <PublicHeader />
       <div className="mt-16">{children}</div>
       <PublicFooter />
+      <FloatingWhatsAppButton />
     </body>
   );
 }

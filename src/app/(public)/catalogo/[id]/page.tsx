@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { db } from "@/prisma";
-import { Badge } from "@/src/shared/components/ui/badge";
 import { ProductGallery } from "@/src/features/products/components/ProductGallery";
 import { ProductPurchaseActions } from "@/src/features/products/components/ProductsPurchasesActions";
 
@@ -34,45 +33,60 @@ export default async function ProductDetailPage({
     price: product.price.toString(),
   };
 
+  const reference = serializedProduct.id.slice(0, 8).toUpperCase();
+
   const currencyFormatter = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <Link
-        href="/catalogo"
-        className="mb-6 inline-flex items-center gap-1.5 text-muted-foreground text-sm hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Voltar ao catálogo
-      </Link>
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
+      {/* Breadcrumb editorial */}
+      <nav className="mb-10 flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-widest">
+        <Link
+          href="/catalogo"
+          className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+          Catálogo
+        </Link>
+        <ChevronRight className="h-3 w-3 opacity-50" />
+        <span>{serializedProduct.category.name}</span>
+      </nav>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_340px] lg:gap-12">
+      <div className="grid gap-10 lg:grid-cols-[1fr_380px] lg:gap-16">
         {/* Coluna principal: imagem + título + descrição */}
-        <div className="flex flex-col gap-6">
+        <div className="flex animate-in flex-col gap-8 fade-in slide-in-from-bottom-2 duration-700">
           <ProductGallery
             images={serializedProduct.images}
             title={serializedProduct.title}
           />
 
-          <div className="flex flex-col gap-3">
-            <Badge variant="secondary" className="w-fit">
-              {serializedProduct.category.name}
-            </Badge>
-            <h1 className="font-display text-2xl text-foreground sm:text-3xl">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="text-muted-foreground text-xs uppercase tracking-[0.2em]">
+                {serializedProduct.category.name}
+              </span>
+              <span className="font-mono text-[11px] text-muted-foreground/60 tracking-wider">
+                Ref. {reference}
+              </span>
+            </div>
+
+            <h1 className="font-display text-3xl text-foreground leading-tight tracking-tight sm:text-4xl">
               {serializedProduct.title}
             </h1>
 
             {/* Preço visível no mobile, logo abaixo do título */}
-            <p className="font-semibold text-2xl text-foreground lg:hidden">
+            <p className="font-display text-2xl text-foreground lg:hidden">
               {currencyFormatter.format(Number(serializedProduct.price))}
             </p>
 
-            <p className="whitespace-pre-line text-muted-foreground text-sm leading-relaxed sm:text-base">
-              {serializedProduct.description}
-            </p>
+            <div className="border-border border-t pt-5">
+              <p className="whitespace-pre-line text-muted-foreground text-sm leading-relaxed sm:text-base">
+                {serializedProduct.description}
+              </p>
+            </div>
 
             {/* Botões de compra no mobile, no final do fluxo */}
             <div className="lg:hidden">
@@ -88,20 +102,28 @@ export default async function ProductDetailPage({
         </div>
 
         {/* Sidebar: só aparece no desktop, sticky */}
-        <aside className="hidden lg:block">
-          <div className="sticky top-24 flex flex-col gap-5 rounded-xl border border-border bg-card p-6">
-            <div>
-              <Badge variant="secondary" className="mb-2">
+        <aside className="hidden animate-in lg:block fade-in slide-in-from-bottom-4 duration-700">
+          <div className="sticky top-24 flex flex-col gap-6 border border-border p-8">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-muted-foreground text-xs uppercase tracking-[0.2em]">
                 {serializedProduct.category.name}
-              </Badge>
-              <h2 className="font-display text-lg text-foreground">
+              </span>
+              <h2 className="font-display text-xl text-foreground leading-snug">
                 {serializedProduct.title}
               </h2>
+              <span className="font-mono text-[11px] text-muted-foreground/60 tracking-wider">
+                Ref. {reference}
+              </span>
             </div>
 
-            <p className="font-semibold text-3xl text-foreground">
-              {currencyFormatter.format(Number(serializedProduct.price))}
-            </p>
+            <div className="border-border border-t pt-6">
+              <span className="mb-1 block text-muted-foreground text-xs uppercase tracking-[0.2em]">
+                Valor
+              </span>
+              <p className="font-display text-4xl text-foreground">
+                {currencyFormatter.format(Number(serializedProduct.price))}
+              </p>
+            </div>
 
             <ProductPurchaseActions
               product={{
@@ -111,7 +133,7 @@ export default async function ProductDetailPage({
               }}
             />
 
-            <p className="text-muted-foreground text-xs leading-relaxed">
+            <p className="text-muted-foreground text-xs italic leading-relaxed">
               Ao clicar em comprar, você será direcionado para finalizar o
               pedido diretamente com a loja.
             </p>

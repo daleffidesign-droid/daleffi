@@ -40,19 +40,19 @@ export function CatalogClient({
   }, [products, categoryId, search]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 border-border border-b pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <Input
             placeholder="Buscar produto..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="sm:max-w-xs"
+            className="rounded-none border-0 border-border border-b bg-transparent px-0 shadow-none focus-visible:ring-0 focus-visible:border-foreground sm:max-w-xs"
           />
 
           <Select value={categoryId} onValueChange={setCategoryId}>
-            <SelectTrigger className="w-full sm:w-48">
+            <SelectTrigger className="w-full rounded-none border-0 border-border border-b bg-transparent px-0 shadow-none focus:ring-0 sm:w-48">
               <SelectValue placeholder="Categoria" />
             </SelectTrigger>
             <SelectContent>
@@ -66,11 +66,11 @@ export function CatalogClient({
           </Select>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1 self-start rounded-lg border border-border p-1 sm:self-auto">
+        <div className="flex shrink-0 items-center gap-1 self-start border border-border sm:self-auto">
           <Button
             variant={view === "grid" ? "default" : "ghost"}
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-none"
             onClick={() => setView("grid")}
             title="Visualizar em grade"
           >
@@ -79,7 +79,7 @@ export function CatalogClient({
           <Button
             variant={view === "list" ? "default" : "ghost"}
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-none"
             onClick={() => setView("list")}
             title="Visualizar em lista"
           >
@@ -89,7 +89,7 @@ export function CatalogClient({
       </div>
 
       {/* Contador de resultados */}
-      <p className="text-muted-foreground text-xs">
+      <p className="text-muted-foreground text-xs uppercase tracking-[0.15em]">
         {filteredProducts.length}{" "}
         {filteredProducts.length === 1
           ? "produto encontrado"
@@ -98,19 +98,25 @@ export function CatalogClient({
 
       {/* Lista/Grade */}
       {filteredProducts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 py-20 text-center">
+        <div className="flex flex-col items-center justify-center gap-3 border border-border border-dashed py-24 text-center">
           {products.length === 0 ? (
             <>
-              <PackageX className="h-10 w-10 text-muted-foreground/40" />
+              <PackageX className="h-8 w-8 text-muted-foreground/40" />
+              <p className="font-display text-foreground text-lg">
+                Nenhum produto disponível
+              </p>
               <p className="text-muted-foreground text-sm">
-                Nenhum produto disponível no momento.
+                Volte em breve para conferir novidades.
               </p>
             </>
           ) : (
             <>
-              <SearchX className="h-10 w-10 text-muted-foreground/40" />
+              <SearchX className="h-8 w-8 text-muted-foreground/40" />
+              <p className="font-display text-foreground text-lg">
+                Nenhum resultado
+              </p>
               <p className="text-muted-foreground text-sm">
-                Nenhum produto encontrado para essa busca.
+                Tente buscar por outro termo ou categoria.
               </p>
             </>
           )}
