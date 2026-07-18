@@ -98,7 +98,6 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Cards de métricas */}
       <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {stats.map((stat) => (
           <Link
@@ -133,7 +132,6 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_260px]">
-        {/* Produtos recentes */}
         <div className="border border-border p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-muted-foreground text-xs uppercase tracking-[0.2em]">
@@ -173,7 +171,6 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        {/* Atalhos + status */}
         <div className="flex flex-col gap-4">
           <div className="border border-border p-6">
             <h2 className="text-muted-foreground text-xs uppercase tracking-[0.2em]">
