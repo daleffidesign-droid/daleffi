@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { cn } from "@/src/shared/components/ui/utils/cn";
-import { contactPhoneNumber, emailAddress } from "../utils/contacts";
+import { getSiteSettings } from "@/src/features/site-settings/actions/get-site-settings";
 
 const currentYear = new Date().getFullYear();
 const companyCnpj = "65.868.723/0001-52";
@@ -10,7 +10,6 @@ const companyCnpj = "65.868.723/0001-52";
 const quickLinks = [
   { label: "Início", href: "/" },
   { label: "Catálogo", href: "/catalogo" },
-  { label: "Login", href: "/signin" },
 ];
 
 type PublicFooterProps = {
@@ -18,15 +17,19 @@ type PublicFooterProps = {
   variant?: "light" | "dark";
 };
 
-export function PublicFooter({
+export async function PublicFooter({
   compact = false,
   variant = "light",
 }: PublicFooterProps) {
   const isDark = variant === "dark";
+  const settings = await getSiteSettings();
+
+  const whatsappHref = `https://wa.me/55${settings.whatsappNumber}?text=${encodeURIComponent(
+    "Olá! Vi o site da Daleffi e gostaria de mais informações.",
+  )}`;
 
   return (
     <footer
-      id="contato"
       className={cn(
         "border-t",
         isDark
@@ -48,22 +51,19 @@ export function PublicFooter({
         >
           {/* Marca */}
           <div>
-            <div className="flex items-center gap-2.5">
+            <Link href="/" className="flex items-center">
               <Image
-                src="/assets/logo.png"
-                width={32}
-                height={32}
+                src="/logos/logo-extenso.png"
+                width={140}
+                height={36}
                 alt="Daleffi Design"
-                className="h-8 w-8 rounded-full"
+                className="h-9 w-auto object-contain"
               />
-              <span className="font-display text-base">
-                Daleffi <span className="text-[var(--gold)]">Design</span>
-              </span>
-            </div>
+            </Link>
 
             <p
               className={cn(
-                "mt-4 text-xs",
+                "mt-4 text-xs tracking-wide",
                 isDark ? "text-white/40" : "text-muted-foreground",
               )}
             >
@@ -76,7 +76,7 @@ export function PublicFooter({
             <div className="flex flex-col gap-2.5">
               <span
                 className={cn(
-                  "text-xs tracking-widest uppercase",
+                  "text-xs uppercase tracking-[0.2em]",
                   isDark ? "text-white/40" : "text-muted-foreground",
                 )}
               >
@@ -101,44 +101,17 @@ export function PublicFooter({
 
           {/* Contato */}
           <div className="flex flex-col gap-3 sm:items-end">
-            <a
-              href={`tel:${contactPhoneNumber}`}
-              className={cn(
-                "inline-flex items-center gap-2 text-sm transition-colors",
-                isDark
-                  ? "text-white/70 hover:text-[var(--gold)]"
-                  : "text-foreground/70 hover:text-[var(--gold)]",
-              )}
-            >
-              <Phone className="h-4 w-4" />
-              {contactPhoneNumber}
-            </a>
-
-            <a
-              href={`mailto:${emailAddress}`}
-              className={cn(
-                "inline-flex items-center gap-2 text-sm transition-colors",
-                isDark
-                  ? "text-white/70 hover:text-[var(--gold)]"
-                  : "text-foreground/70 hover:text-[var(--gold)]",
-              )}
-            >
-              <Mail className="h-4 w-4" />
-              {emailAddress}
-            </a>
-
             <span
               className={cn(
-                "inline-flex items-center gap-2 text-sm",
-                isDark ? "text-white/70" : "text-foreground/70",
+                "mb-1 text-xs uppercase tracking-[0.2em] sm:text-right",
+                isDark ? "text-white/40" : "text-muted-foreground",
               )}
             >
-              <MapPin className="h-4 w-4" />
-              Poços de Caldas, MG - Brasil
+              Contato
             </span>
 
             <a
-              href="https://www.instagram.com/daleffi_desing"
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -148,8 +121,50 @@ export function PublicFooter({
                   : "text-foreground/70 hover:text-[var(--gold)]",
               )}
             >
-              @daleffidesign
+              <MessageCircle className="h-4 w-4" />
+              {settings.whatsappNumber}
             </a>
+
+            <a
+              href={`mailto:${settings.contactEmail}`}
+              className={cn(
+                "inline-flex items-center gap-2 text-sm transition-colors",
+                isDark
+                  ? "text-white/70 hover:text-[var(--gold)]"
+                  : "text-foreground/70 hover:text-[var(--gold)]",
+              )}
+            >
+              <Mail className="h-4 w-4" />
+              {settings.contactEmail}
+            </a>
+
+            {settings.addressLine && (
+              <span
+                className={cn(
+                  "inline-flex items-center gap-2 text-sm",
+                  isDark ? "text-white/70" : "text-foreground/70",
+                )}
+              >
+                <MapPin className="h-4 w-4" />
+                {settings.addressLine}
+              </span>
+            )}
+
+            {settings.instagramHandle && (
+              <a
+                href={`https://www.instagram.com/${settings.instagramHandle}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "text-sm transition-colors",
+                  isDark
+                    ? "text-white/70 hover:text-[var(--gold)]"
+                    : "text-foreground/70 hover:text-[var(--gold)]",
+                )}
+              >
+                @{settings.instagramHandle}
+              </a>
+            )}
           </div>
         </div>
 

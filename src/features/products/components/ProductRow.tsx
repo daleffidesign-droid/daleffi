@@ -46,6 +46,10 @@ type ProductRowData = {
   category: { id: string; name: string };
   images: { url: string; path: string }[];
   featured: boolean;
+  weightKg: number | null;
+  heightCm: number | null;
+  widthCm: number | null;
+  lengthCm: number | null;
 };
 
 const currencyFormatter = new Intl.NumberFormat("pt-BR", {

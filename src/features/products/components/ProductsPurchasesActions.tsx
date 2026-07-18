@@ -6,14 +6,16 @@ import Image from "next/image";
 
 export function ProductPurchaseActions({
   product,
+  whatsappNumber,
 }: {
   product: {
     title: string;
     price: string;
     mercadoLivreLink: string | null;
   };
+  whatsappNumber: string;
 }) {
-  const whatsappLink = buildWhatsAppOrderLink(product);
+  const whatsappLink = buildWhatsAppOrderLink(whatsappNumber, product);
 
   return (
     <div className="mt-2 flex flex-col gap-3">

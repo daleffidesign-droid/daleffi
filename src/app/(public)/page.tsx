@@ -4,13 +4,11 @@ import {
   Sparkles,
   ShieldCheck,
   ArrowRight,
-  MessageCircle,
   PenTool,
 } from "lucide-react";
 import { Button } from "@/src/shared/components/ui/button";
 import { getFeaturedProducts } from "@/src/features/products/actions/get-featured-products";
 import { FeaturedCarousel } from "@/src/features/products/components/FeaturedCarousel";
-import { contactPhoneNumber } from "@/src/shared/utils/contacts";
 
 const HIGHLIGHTS = [
   {
@@ -35,10 +33,6 @@ const HIGHLIGHTS = [
 
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
-
-  const whatsappHref = `https://wa.me/55${contactPhoneNumber}?text=${encodeURIComponent(
-    "Olá! Vi o site da Daleffi e gostaria de mais informações.",
-  )}`;
 
   return (
     <div className="flex flex-1 flex-col bg-black text-white">
@@ -70,21 +64,6 @@ export default async function Home() {
                   Veja nosso catálogo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              }
-            />
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/20 text-black hover:bg-white/5"
-              render={
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  Fale no WhatsApp
-                </a>
               }
             />
           </div>
@@ -228,21 +207,6 @@ export default async function Home() {
                   Veja nosso catálogo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-              }
-            />
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white/20 text-black hover:bg-white/5"
-              render={
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  Fale no WhatsApp
-                </a>
               }
             />
           </div>

@@ -52,3 +52,8 @@ export type Product = Prisma.ProductModel
  * 
  */
 export type ProductImage = Prisma.ProductImageModel
+/**
+ * Model SiteSettings
+ * 
+ */
+export type SiteSettings = Prisma.SiteSettingsModel

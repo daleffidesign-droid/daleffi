@@ -6,6 +6,7 @@ import { TeamTable } from "@/src/features/team/components/TeamTable";
 
 export default async function TeamPage() {
   const session = await auth.api.getSession({ headers: await headers() });
+  const isOwner = session?.user.role === "owner";
 
   const members = await db.user.findMany({
     orderBy: { createdAt: "asc" },
@@ -29,7 +30,7 @@ export default async function TeamPage() {
             Gerencie funções, acessos e contas da equipe.
           </p>
         </div>
-        <NewMemberDialog />
+        {isOwner && <NewMemberDialog />}
       </div>
 
       <div className="mt-8">
@@ -40,6 +41,7 @@ export default async function TeamPage() {
             banned: member.banned ?? false,
           }))}
           currentUserId={session?.user.id ?? ""}
+          currentUserRole={session?.user.role ?? ""}
         />
       </div>
     </div>

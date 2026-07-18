@@ -42,12 +42,19 @@ const ROLE_OPTIONS = [
 interface TeamTableProps {
   members: TeamMember[];
   currentUserId: string;
+  currentUserRole: string;
 }
 
-export function TeamTable({ members, currentUserId }: TeamTableProps) {
+export function TeamTable({
+  members,
+  currentUserId,
+  currentUserRole,
+}: TeamTableProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [pendingId, setPendingId] = useState<string | null>(null);
+
+  const isOwner = currentUserRole === "owner";
 
   function handleRoleChange(userId: string, role: string) {
     setPendingId(userId);
@@ -89,13 +96,15 @@ export function TeamTable({ members, currentUserId }: TeamTableProps) {
   return (
     <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-sm">
-        <thead className="bg-surface text-left text-muted-foreground text-xs uppercase tracking-wide">
+        <thead className="bg-surface text-left text-white text-xs uppercase tracking-wide">
           <tr>
             <th className="px-4 py-3 font-medium">Nome</th>
             <th className="px-4 py-3 font-medium">E-mail</th>
             <th className="px-4 py-3 font-medium">Função</th>
             <th className="px-4 py-3 font-medium">Status</th>
-            <th className="px-4 py-3 font-medium text-right">Ações</th>
+            {isOwner && (
+              <th className="px-4 py-3 font-medium text-right">Ações</th>
+            )}
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
@@ -110,22 +119,31 @@ export function TeamTable({ members, currentUserId }: TeamTableProps) {
                   {member.email}
                 </td>
                 <td className="px-4 py-3">
-                  <Select
-                    value={member.role}
-                    onValueChange={(role) => handleRoleChange(member.id, role)}
-                    disabled={isSelf || isBusy}
-                  >
-                    <SelectTrigger className="h-8 w-36">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ROLE_OPTIONS.map((role) => (
-                        <SelectItem key={role.value} value={role.value}>
-                          {role.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {isOwner ? (
+                    <Select
+                      value={member.role}
+                      onValueChange={(role) =>
+                        handleRoleChange(member.id, role)
+                      }
+                      disabled={isSelf || isBusy}
+                    >
+                      <SelectTrigger className="h-8 w-36">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ROLE_OPTIONS.map((role) => (
+                          <SelectItem key={role.value} value={role.value}>
+                            {role.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <span className="text-muted-foreground">
+                      {ROLE_OPTIONS.find((role) => role.value === member.role)
+                        ?.label ?? member.role}
+                    </span>
+                  )}
                 </td>
                 <td className="whitespace-nowrap px-4 py-3">
                   {member.banned ? (
@@ -138,59 +156,63 @@ export function TeamTable({ members, currentUserId }: TeamTableProps) {
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      disabled={isSelf || isBusy}
-                      onClick={() => handleToggleBan(member.id, member.banned)}
-                      title={member.banned ? "Desbanir" : "Banir"}
-                    >
-                      {isBusy ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : member.banned ? (
-                        <ShieldCheck className="h-3.5 w-3.5" />
-                      ) : (
-                        <ShieldBan className="h-3.5 w-3.5" />
-                      )}
-                    </Button>
+                {isOwner && (
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={isSelf || isBusy}
+                        onClick={() =>
+                          handleToggleBan(member.id, member.banned)
+                        }
+                        title={member.banned ? "Desbanir" : "Banir"}
+                      >
+                        {isBusy ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : member.banned ? (
+                          <ShieldCheck className="h-3.5 w-3.5" />
+                        ) : (
+                          <ShieldBan className="h-3.5 w-3.5" />
+                        )}
+                      </Button>
 
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          disabled={isSelf || isBusy}
-                          title="Excluir"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Excluir colaborador
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Essa ação remove permanentemente {member.name} do
-                            sistema. Não é possível desfazer.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleRemove(member.id)}
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            disabled={isSelf || isBusy}
+                            title="Excluir"
                           >
-                            Excluir
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </td>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Excluir colaborador
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Essa ação remove permanentemente {member.name} do
+                              sistema. Não é possível desfazer.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleRemove(member.id)}
+                            >
+                              Excluir
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </td>
+                )}
               </tr>
             );
           })}
@@ -198,7 +220,7 @@ export function TeamTable({ members, currentUserId }: TeamTableProps) {
           {members.length === 0 && (
             <tr>
               <td
-                colSpan={5}
+                colSpan={isOwner ? 5 : 4}
                 className="px-4 py-8 text-center text-muted-foreground"
               >
                 Nenhum colaborador cadastrado.

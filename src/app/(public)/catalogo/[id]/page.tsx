@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { db } from "@/prisma";
 import { ProductGallery } from "@/src/features/products/components/ProductGallery";
 import { ProductPurchaseActions } from "@/src/features/products/components/ProductsPurchasesActions";
+import { ShippingCalculator } from "@/src/features/products/components/ShippingCalculator";
+import { getSiteSettings } from "@/src/features/site-settings/actions/get-site-settings";
 
 export const revalidate = 60;
 
@@ -28,6 +30,8 @@ export default async function ProductDetailPage({
     notFound();
   }
 
+  const settings = await getSiteSettings();
+
   const serializedProduct = {
     ...product,
     price: product.price.toString(),
@@ -42,7 +46,6 @@ export default async function ProductDetailPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
-      {/* Breadcrumb editorial */}
       <nav className="mb-10 flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-widest">
         <Link
           href="/catalogo"
@@ -56,7 +59,6 @@ export default async function ProductDetailPage({
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-[1fr_380px] lg:gap-16">
-        {/* Coluna principal: imagem + título + descrição */}
         <div className="flex animate-in flex-col gap-8 fade-in slide-in-from-bottom-2 duration-700">
           <ProductGallery
             images={serializedProduct.images}
@@ -77,7 +79,6 @@ export default async function ProductDetailPage({
               {serializedProduct.title}
             </h1>
 
-            {/* Preço visível no mobile, logo abaixo do título */}
             <p className="font-display text-2xl text-foreground lg:hidden">
               {currencyFormatter.format(Number(serializedProduct.price))}
             </p>
@@ -88,9 +89,13 @@ export default async function ProductDetailPage({
               </p>
             </div>
 
-            {/* Botões de compra no mobile, no final do fluxo */}
+            <div className="lg:hidden">
+              <ShippingCalculator productId={serializedProduct.id} />
+            </div>
+
             <div className="lg:hidden">
               <ProductPurchaseActions
+                whatsappNumber={settings.whatsappNumber}
                 product={{
                   title: serializedProduct.title,
                   price: serializedProduct.price,
@@ -101,7 +106,6 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
-        {/* Sidebar: só aparece no desktop, sticky */}
         <aside className="hidden animate-in lg:block fade-in slide-in-from-bottom-4 duration-700">
           <div className="sticky top-24 flex flex-col gap-6 border border-border p-8">
             <div className="flex flex-col gap-1.5">
@@ -126,12 +130,15 @@ export default async function ProductDetailPage({
             </div>
 
             <ProductPurchaseActions
+              whatsappNumber={settings.whatsappNumber}
               product={{
                 title: serializedProduct.title,
                 price: serializedProduct.price,
                 mercadoLivreLink: serializedProduct.mercadoLivreLink,
               }}
             />
+
+            <ShippingCalculator productId={serializedProduct.id} />
 
             <p className="text-muted-foreground text-xs italic leading-relaxed">
               Ao clicar em comprar, você será direcionado para finalizar o

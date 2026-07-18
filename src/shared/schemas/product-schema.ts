@@ -17,6 +17,22 @@ export const productFormSchema = z.object({
   mercadoLivreLink: z.string().url().optional().or(z.literal("")),
   images: z.array(productImageSchema),
   featured: z.boolean().default(false),
+  weightKg: z.coerce
+    .number()
+    .positive("Peso deve ser maior que zero")
+    .optional(),
+  heightCm: z.coerce
+    .number()
+    .positive("Altura deve ser maior que zero")
+    .optional(),
+  widthCm: z.coerce
+    .number()
+    .positive("Largura deve ser maior que zero")
+    .optional(),
+  lengthCm: z.coerce
+    .number()
+    .positive("Comprimento deve ser maior que zero")
+    .optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;

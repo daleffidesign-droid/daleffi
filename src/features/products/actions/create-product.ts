@@ -43,6 +43,10 @@ export async function createProduct(input: ProductFormValues) {
       mercadoLivreLink: data.mercadoLivreLink || null,
       categoryId,
       featured: data.featured,
+      weightKg: data.weightKg ?? null,
+      heightCm: data.heightCm ?? null,
+      widthCm: data.widthCm ?? null,
+      lengthCm: data.lengthCm ?? null,
       images: {
         create: data.images.map((image, index) => ({
           url: image.url,

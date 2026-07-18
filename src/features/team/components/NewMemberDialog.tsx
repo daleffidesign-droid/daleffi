@@ -20,12 +20,14 @@ export function NewMemberDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="bg-[var(--gold)] text-[var(--gold-foreground)] hover:bg-[var(--gold-hover)]">
-          <UserPlus className="mr-2 h-4 w-4" />
-          Novo colaborador
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button className="bg-[var(--gold)] text-[var(--gold-foreground)] hover:bg-[var(--gold-hover)]">
+            <UserPlus className="mr-2 h-4 w-4" />
+            Novo colaborador
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Novo colaborador</DialogTitle>

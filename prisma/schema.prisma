@@ -101,6 +101,11 @@ model Product {
     createdAt        DateTime       @default(now())
     updatedAt        DateTime       @updatedAt
 
+    weightKg Float?
+    heightCm Float?
+    widthCm  Float?
+    lengthCm Float?
+
     @@index([categoryId])
     @@index([featured, featuredOrder])
     @@map("product")
@@ -117,4 +122,16 @@ model ProductImage {
 
     @@index([productId])
     @@map("product_image")
+}
+
+model SiteSettings {
+    id              String   @id @default("singleton")
+    whatsappNumber  String
+    contactEmail    String
+    instagramHandle String?
+    addressLine     String?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    @@map("site_settings")
 }

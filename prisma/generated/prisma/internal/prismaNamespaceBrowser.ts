@@ -57,7 +57,8 @@ export const ModelName = {
   Verification: 'Verification',
   Category: 'Category',
   Product: 'Product',
-  ProductImage: 'ProductImage'
+  ProductImage: 'ProductImage',
+  SiteSettings: 'SiteSettings'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -161,7 +162,11 @@ export const ProductScalarFieldEnum = {
   featuredOrder: 'featuredOrder',
   categoryId: 'categoryId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  weightKg: 'weightKg',
+  heightCm: 'heightCm',
+  widthCm: 'widthCm',
+  lengthCm: 'lengthCm'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -177,6 +182,19 @@ export const ProductImageScalarFieldEnum = {
 } as const
 
 export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
+
+
+export const SiteSettingsScalarFieldEnum = {
+  id: 'id',
+  whatsappNumber: 'whatsappNumber',
+  contactEmail: 'contactEmail',
+  instagramHandle: 'instagramHandle',
+  addressLine: 'addressLine',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SiteSettingsScalarFieldEnum = (typeof SiteSettingsScalarFieldEnum)[keyof typeof SiteSettingsScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -30,7 +30,7 @@ export function NewProductDialog({ categories }: NewProductDialogProps) {
           </Button>
         }
       />
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Novo produto</DialogTitle>
           <DialogDescription>

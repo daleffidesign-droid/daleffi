@@ -62,14 +62,14 @@ export function MainSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-4 h-14 py-4">
+      <SidebarHeader className="border-b border-sidebar-border px-2 h-14 py-4">
         <div className="flex items-center gap-2.5">
           <Image
-            src="/assets/logo.png"
+            src="/web-app-manifest-512x512.png"
             width={24}
             height={24}
             alt="Logo"
-            className="h-6 w-auto"
+            className="h-8 pb-1 w-auto"
           />
           <div className="group-data-[collapsible=icon]:hidden">
             <p className="text-sm font-semibold leading-none">Daleffi</p>
@@ -80,7 +80,7 @@ export function MainSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-0">
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>

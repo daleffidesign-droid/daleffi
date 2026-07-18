@@ -9,6 +9,7 @@ import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
 import { Textarea } from "@/src/shared/components/ui/textarea";
 import { Switch } from "@/src/shared/components/ui/switch";
+import { Separator } from "@/src/shared/components/ui/separator";
 import { Alert, AlertDescription } from "@/src/shared/components/ui/alert";
 import {
   Form,
@@ -62,7 +63,11 @@ export function ProductForm({ categories, onSuccess }: ProductFormProps) {
       newCategoryName: "",
       mercadoLivreLink: "",
       images: [],
-      featured: false, // 👈
+      featured: false,
+      weightKg: undefined,
+      heightCm: undefined,
+      widthCm: undefined,
+      lengthCm: undefined,
     },
   });
 
@@ -230,6 +235,104 @@ export function ProductForm({ categories, onSuccess }: ProductFormProps) {
             </FormItem>
           )}
         />
+
+        <Separator />
+
+        <div className="space-y-1">
+          <p className="font-medium text-sm">
+            Peso e dimensões (para cálculo de frete)
+          </p>
+          <p className="text-muted-foreground text-xs">
+            Medidas da caixa/embalagem, não do produto solto. Sem isso, a
+            calculadora de frete não funciona para este produto.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="weightKg"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Peso (kg)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="2.5"
+                    {...field}
+                    value={(field.value as string | number | undefined) ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="heightCm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Altura (cm)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    placeholder="40"
+                    {...field}
+                    value={(field.value as string | number | undefined) ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="widthCm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Largura (cm)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    placeholder="30"
+                    {...field}
+                    value={(field.value as string | number | undefined) ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lengthCm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comprimento (cm)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    placeholder="50"
+                    {...field}
+                    value={(field.value as string | number | undefined) ?? ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}

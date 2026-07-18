@@ -26,7 +26,7 @@ import { useIsMobile } from "./utils/use-mobile";
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
-const SIDEBAR_WIDTH_MOBILE = "70vw";
+const SIDEBAR_WIDTH_MOBILE = "65vw";
 const SIDEBAR_WIDTH_ICON = "5rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
@@ -181,7 +181,7 @@ function Sidebar({
       >
         <SheetContent
           data-sidebar="sidebar"
-          className="bg-background z-50 text-sidebar-foreground w-(--sidebar-width) h-[calc(100dvh-100px)] top-[86px] mx-3 [&>button]:hidden md:shadow-[0px_0px_3px_2px_#00000024] px-4 border rounded-3xl"
+          className="bg-background z-50 text-sidebar-foreground w-(--sidebar-width) h-[calc(100dvh-100px)] top-[86px] mx-3 [&>button]:hidden md:shadow-[0px_0px_3px_2px_#00000024] px-2 border rounded-3xl"
           data-slot="sidebar"
           data-mobile="true"
           style={

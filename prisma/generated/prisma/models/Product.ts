@@ -29,11 +29,19 @@ export type AggregateProduct = {
 export type ProductAvgAggregateOutputType = {
   price: runtime.Decimal | null
   featuredOrder: number | null
+  weightKg: number | null
+  heightCm: number | null
+  widthCm: number | null
+  lengthCm: number | null
 }
 
 export type ProductSumAggregateOutputType = {
   price: runtime.Decimal | null
   featuredOrder: number | null
+  weightKg: number | null
+  heightCm: number | null
+  widthCm: number | null
+  lengthCm: number | null
 }
 
 export type ProductMinAggregateOutputType = {
@@ -48,6 +56,10 @@ export type ProductMinAggregateOutputType = {
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  weightKg: number | null
+  heightCm: number | null
+  widthCm: number | null
+  lengthCm: number | null
 }
 
 export type ProductMaxAggregateOutputType = {
@@ -62,6 +74,10 @@ export type ProductMaxAggregateOutputType = {
   categoryId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  weightKg: number | null
+  heightCm: number | null
+  widthCm: number | null
+  lengthCm: number | null
 }
 
 export type ProductCountAggregateOutputType = {
@@ -76,6 +92,10 @@ export type ProductCountAggregateOutputType = {
   categoryId: number
   createdAt: number
   updatedAt: number
+  weightKg: number
+  heightCm: number
+  widthCm: number
+  lengthCm: number
   _all: number
 }
 
@@ -83,11 +103,19 @@ export type ProductCountAggregateOutputType = {
 export type ProductAvgAggregateInputType = {
   price?: true
   featuredOrder?: true
+  weightKg?: true
+  heightCm?: true
+  widthCm?: true
+  lengthCm?: true
 }
 
 export type ProductSumAggregateInputType = {
   price?: true
   featuredOrder?: true
+  weightKg?: true
+  heightCm?: true
+  widthCm?: true
+  lengthCm?: true
 }
 
 export type ProductMinAggregateInputType = {
@@ -102,6 +130,10 @@ export type ProductMinAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  weightKg?: true
+  heightCm?: true
+  widthCm?: true
+  lengthCm?: true
 }
 
 export type ProductMaxAggregateInputType = {
@@ -116,6 +148,10 @@ export type ProductMaxAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  weightKg?: true
+  heightCm?: true
+  widthCm?: true
+  lengthCm?: true
 }
 
 export type ProductCountAggregateInputType = {
@@ -130,6 +166,10 @@ export type ProductCountAggregateInputType = {
   categoryId?: true
   createdAt?: true
   updatedAt?: true
+  weightKg?: true
+  heightCm?: true
+  widthCm?: true
+  lengthCm?: true
   _all?: true
 }
 
@@ -231,6 +271,10 @@ export type ProductGroupByOutputType = {
   categoryId: string
   createdAt: Date
   updatedAt: Date
+  weightKg: number | null
+  heightCm: number | null
+  widthCm: number | null
+  lengthCm: number | null
   _count: ProductCountAggregateOutputType | null
   _avg: ProductAvgAggregateOutputType | null
   _sum: ProductSumAggregateOutputType | null
@@ -268,6 +312,10 @@ export type ProductWhereInput = {
   categoryId?: Prisma.StringFilter<"Product"> | string
   createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  weightKg?: Prisma.FloatNullableFilter<"Product"> | number | null
+  heightCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  widthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  lengthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   images?: Prisma.ProductImageListRelationFilter
 }
@@ -284,6 +332,10 @@ export type ProductOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
+  heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  lengthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
   images?: Prisma.ProductImageOrderByRelationAggregateInput
 }
@@ -303,6 +355,10 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   categoryId?: Prisma.StringFilter<"Product"> | string
   createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  weightKg?: Prisma.FloatNullableFilter<"Product"> | number | null
+  heightCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  widthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  lengthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   images?: Prisma.ProductImageListRelationFilter
 }, "id">
@@ -319,6 +375,10 @@ export type ProductOrderByWithAggregationInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrderInput | Prisma.SortOrder
+  heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  lengthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
   _avg?: Prisma.ProductAvgOrderByAggregateInput
   _max?: Prisma.ProductMaxOrderByAggregateInput
@@ -341,6 +401,10 @@ export type ProductScalarWhereWithAggregatesInput = {
   categoryId?: Prisma.StringWithAggregatesFilter<"Product"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
+  weightKg?: Prisma.FloatNullableWithAggregatesFilter<"Product"> | number | null
+  heightCm?: Prisma.FloatNullableWithAggregatesFilter<"Product"> | number | null
+  widthCm?: Prisma.FloatNullableWithAggregatesFilter<"Product"> | number | null
+  lengthCm?: Prisma.FloatNullableWithAggregatesFilter<"Product"> | number | null
 }
 
 export type ProductCreateInput = {
@@ -354,6 +418,10 @@ export type ProductCreateInput = {
   featuredOrder?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
   images?: Prisma.ProductImageCreateNestedManyWithoutProductInput
 }
@@ -370,6 +438,10 @@ export type ProductUncheckedCreateInput = {
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
   images?: Prisma.ProductImageUncheckedCreateNestedManyWithoutProductInput
 }
 
@@ -384,6 +456,10 @@ export type ProductUpdateInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
   images?: Prisma.ProductImageUpdateManyWithoutProductNestedInput
 }
@@ -400,6 +476,10 @@ export type ProductUncheckedUpdateInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.ProductImageUncheckedUpdateManyWithoutProductNestedInput
 }
 
@@ -415,6 +495,10 @@ export type ProductCreateManyInput = {
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
 }
 
 export type ProductUpdateManyMutationInput = {
@@ -428,6 +512,10 @@ export type ProductUpdateManyMutationInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type ProductUncheckedUpdateManyInput = {
@@ -442,6 +530,10 @@ export type ProductUncheckedUpdateManyInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type ProductListRelationFilter = {
@@ -466,11 +558,19 @@ export type ProductCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrder
+  heightCm?: Prisma.SortOrder
+  widthCm?: Prisma.SortOrder
+  lengthCm?: Prisma.SortOrder
 }
 
 export type ProductAvgOrderByAggregateInput = {
   price?: Prisma.SortOrder
   featuredOrder?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrder
+  heightCm?: Prisma.SortOrder
+  widthCm?: Prisma.SortOrder
+  lengthCm?: Prisma.SortOrder
 }
 
 export type ProductMaxOrderByAggregateInput = {
@@ -485,6 +585,10 @@ export type ProductMaxOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrder
+  heightCm?: Prisma.SortOrder
+  widthCm?: Prisma.SortOrder
+  lengthCm?: Prisma.SortOrder
 }
 
 export type ProductMinOrderByAggregateInput = {
@@ -499,11 +603,19 @@ export type ProductMinOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrder
+  heightCm?: Prisma.SortOrder
+  widthCm?: Prisma.SortOrder
+  lengthCm?: Prisma.SortOrder
 }
 
 export type ProductSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
   featuredOrder?: Prisma.SortOrder
+  weightKg?: Prisma.SortOrder
+  heightCm?: Prisma.SortOrder
+  widthCm?: Prisma.SortOrder
+  lengthCm?: Prisma.SortOrder
 }
 
 export type ProductScalarRelationFilter = {
@@ -569,6 +681,14 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type ProductCreateNestedOneWithoutImagesInput = {
   create?: Prisma.XOR<Prisma.ProductCreateWithoutImagesInput, Prisma.ProductUncheckedCreateWithoutImagesInput>
   connectOrCreate?: Prisma.ProductCreateOrConnectWithoutImagesInput
@@ -594,6 +714,10 @@ export type ProductCreateWithoutCategoryInput = {
   featuredOrder?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
   images?: Prisma.ProductImageCreateNestedManyWithoutProductInput
 }
 
@@ -608,6 +732,10 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   featuredOrder?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
   images?: Prisma.ProductImageUncheckedCreateNestedManyWithoutProductInput
 }
 
@@ -652,6 +780,10 @@ export type ProductScalarWhereInput = {
   categoryId?: Prisma.StringFilter<"Product"> | string
   createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  weightKg?: Prisma.FloatNullableFilter<"Product"> | number | null
+  heightCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  widthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
+  lengthCm?: Prisma.FloatNullableFilter<"Product"> | number | null
 }
 
 export type ProductCreateWithoutImagesInput = {
@@ -665,6 +797,10 @@ export type ProductCreateWithoutImagesInput = {
   featuredOrder?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
 }
 
@@ -680,6 +816,10 @@ export type ProductUncheckedCreateWithoutImagesInput = {
   categoryId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
 }
 
 export type ProductCreateOrConnectWithoutImagesInput = {
@@ -709,6 +849,10 @@ export type ProductUpdateWithoutImagesInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
 }
 
@@ -724,6 +868,10 @@ export type ProductUncheckedUpdateWithoutImagesInput = {
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type ProductCreateManyCategoryInput = {
@@ -737,6 +885,10 @@ export type ProductCreateManyCategoryInput = {
   featuredOrder?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  weightKg?: number | null
+  heightCm?: number | null
+  widthCm?: number | null
+  lengthCm?: number | null
 }
 
 export type ProductUpdateWithoutCategoryInput = {
@@ -750,6 +902,10 @@ export type ProductUpdateWithoutCategoryInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.ProductImageUpdateManyWithoutProductNestedInput
 }
 
@@ -764,6 +920,10 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   images?: Prisma.ProductImageUncheckedUpdateManyWithoutProductNestedInput
 }
 
@@ -778,6 +938,10 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   featuredOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  heightCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  widthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  lengthCm?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 
@@ -823,6 +987,10 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  weightKg?: boolean
+  heightCm?: boolean
+  widthCm?: boolean
+  lengthCm?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Product$imagesArgs<ExtArgs>
   _count?: boolean | Prisma.ProductCountOutputTypeDefaultArgs<ExtArgs>
@@ -840,6 +1008,10 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  weightKg?: boolean
+  heightCm?: boolean
+  widthCm?: boolean
+  lengthCm?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -855,6 +1027,10 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  weightKg?: boolean
+  heightCm?: boolean
+  widthCm?: boolean
+  lengthCm?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -870,9 +1046,13 @@ export type ProductSelectScalar = {
   categoryId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  weightKg?: boolean
+  heightCm?: boolean
+  widthCm?: boolean
+  lengthCm?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "price" | "active" | "mercadoLivreLink" | "featured" | "featuredOrder" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "price" | "active" | "mercadoLivreLink" | "featured" | "featuredOrder" | "categoryId" | "createdAt" | "updatedAt" | "weightKg" | "heightCm" | "widthCm" | "lengthCm", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Product$imagesArgs<ExtArgs>
@@ -903,6 +1083,10 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     categoryId: string
     createdAt: Date
     updatedAt: Date
+    weightKg: number | null
+    heightCm: number | null
+    widthCm: number | null
+    lengthCm: number | null
   }, ExtArgs["result"]["product"]>
   composites: {}
 }
@@ -1339,6 +1523,10 @@ export interface ProductFieldRefs {
   readonly categoryId: Prisma.FieldRef<"Product", 'String'>
   readonly createdAt: Prisma.FieldRef<"Product", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Product", 'DateTime'>
+  readonly weightKg: Prisma.FieldRef<"Product", 'Float'>
+  readonly heightCm: Prisma.FieldRef<"Product", 'Float'>
+  readonly widthCm: Prisma.FieldRef<"Product", 'Float'>
+  readonly lengthCm: Prisma.FieldRef<"Product", 'Float'>
 }
     
 

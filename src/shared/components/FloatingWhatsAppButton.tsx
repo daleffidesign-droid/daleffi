@@ -1,14 +1,16 @@
 import Image from "next/image";
-import { contactPhoneNumber } from "../utils/contacts";
+import { getSiteSettings } from "@/src/features/site-settings/actions/get-site-settings";
 
 interface FloatingWhatsAppButtonProps {
   message?: string;
 }
 
-export function FloatingWhatsAppButton({
+export async function FloatingWhatsAppButton({
   message = "Olá! Vi o site da Daleffi e gostaria de mais informações.",
 }: FloatingWhatsAppButtonProps) {
-  const href = `https://wa.me/55${contactPhoneNumber}?text=${encodeURIComponent(
+  const settings = await getSiteSettings();
+
+  const href = `https://wa.me/55${settings.whatsappNumber}?text=${encodeURIComponent(
     message,
   )}`;
 

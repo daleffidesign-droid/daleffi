@@ -6,8 +6,8 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { FeaturedProduct } from "../actions/get-featured-products";
 
-const SPEED_PX_PER_FRAME = 0.6;
-const MIN_REPEATS = 4; // garante largura suficiente mesmo com poucos produtos
+const SPEED_PX_PER_SECOND = 40;
+const MIN_REPEATS = 4;
 
 export function FeaturedCarousel({
   products,
@@ -19,8 +19,9 @@ export function FeaturedCarousel({
   const isPaused = useRef(false);
   const rafRef = useRef<number | null>(null);
   const singleSetWidthRef = useRef(0);
+  const positionRef = useRef(0); // acumulador fracionário próprio
+  const lastTimeRef = useRef<number | null>(null);
 
-  // Repete o suficiente pra sempre haver espaço de sobra pro scroll
   const repeatCount = Math.max(MIN_REPEATS, 2);
   const loopedProducts = Array.from(
     { length: repeatCount },
@@ -30,8 +31,6 @@ export function FeaturedCarousel({
   useEffect(() => {
     if (products.length === 0) return;
 
-    // mede a largura real do primeiro "set" via offsetLeft do item
-    // que marca o início do segundo set (posição = largura do 1º set)
     function measure() {
       if (markerRef.current) {
         singleSetWidthRef.current = markerRef.current.offsetLeft;
@@ -42,16 +41,25 @@ export function FeaturedCarousel({
     const resizeObserver = new ResizeObserver(measure);
     if (trackRef.current) resizeObserver.observe(trackRef.current);
 
-    function tick() {
+    function tick(time: number) {
       const track = trackRef.current;
       const singleSetWidth = singleSetWidthRef.current;
 
-      if (track && !isPaused.current && singleSetWidth > 0) {
-        track.scrollLeft += SPEED_PX_PER_FRAME;
+      if (lastTimeRef.current === null) {
+        lastTimeRef.current = time;
+      }
+      const deltaSeconds = (time - lastTimeRef.current) / 1000;
+      lastTimeRef.current = time;
 
-        if (track.scrollLeft >= singleSetWidth) {
-          track.scrollLeft -= singleSetWidth;
+      if (track && !isPaused.current && singleSetWidth > 0) {
+        // acumula no seu próprio float, nunca lê de volta do DOM
+        positionRef.current += SPEED_PX_PER_SECOND * deltaSeconds;
+
+        if (positionRef.current >= singleSetWidth) {
+          positionRef.current -= singleSetWidth;
         }
+
+        track.scrollLeft = positionRef.current;
       }
       rafRef.current = requestAnimationFrame(tick);
     }
@@ -79,6 +87,7 @@ export function FeaturedCarousel({
         ref={trackRef}
         onMouseEnter={() => (isPaused.current = true)}
         onMouseLeave={() => (isPaused.current = false)}
+        style={{ scrollBehavior: "auto" }}
         className="no-scrollbar flex gap-4 overflow-x-scroll"
       >
         {loopedProducts.map((product, index) => (
@@ -102,10 +111,10 @@ export function FeaturedCarousel({
               </div>
             )}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 pt-10">
-              <p className="truncate text-sm font-medium text-white">
+              <p className="truncate font-medium text-sm text-white">
                 {product.title}
               </p>
-              <p className="text-xs text-[var(--gold)]">
+              <p className="text-[var(--gold)] text-xs">
                 {currency.format(product.price)}
               </p>
             </div>

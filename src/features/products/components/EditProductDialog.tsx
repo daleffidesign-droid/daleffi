@@ -14,6 +14,7 @@ import { Textarea } from "@/src/shared/components/ui/textarea";
 import { Label } from "@/src/shared/components/ui/label";
 import { Button } from "@/src/shared/components/ui/button";
 import { Switch } from "@/src/shared/components/ui/switch";
+import { Separator } from "@/src/shared/components/ui/separator";
 import { toast } from "sonner";
 import { updateProductAction } from "../actions/update-products";
 import { ProductImageUploader } from "./ImageUploader";
@@ -31,6 +32,10 @@ type EditableProduct = {
   category: Category;
   images: ProductImageValue[];
   featured: boolean;
+  weightKg: number | null;
+  heightCm: number | null;
+  widthCm: number | null;
+  lengthCm: number | null;
 };
 
 export function EditProductDialog({
@@ -51,6 +56,10 @@ export function EditProductDialog({
     mercadoLivreLink: product.mercadoLivreLink ?? "",
     images: product.images,
     featured: product.featured,
+    weightKg: product.weightKg?.toString() ?? "",
+    heightCm: product.heightCm?.toString() ?? "",
+    widthCm: product.widthCm?.toString() ?? "",
+    lengthCm: product.lengthCm?.toString() ?? "",
   });
 
   useEffect(() => {
@@ -64,6 +73,10 @@ export function EditProductDialog({
         mercadoLivreLink: product.mercadoLivreLink ?? "",
         images: product.images,
         featured: product.featured,
+        weightKg: product.weightKg?.toString() ?? "",
+        heightCm: product.heightCm?.toString() ?? "",
+        widthCm: product.widthCm?.toString() ?? "",
+        lengthCm: product.lengthCm?.toString() ?? "",
       });
     }
   }, [open, product]);
@@ -79,6 +92,10 @@ export function EditProductDialog({
         mercadoLivreLink: form.mercadoLivreLink,
         images: form.images,
         featured: form.featured,
+        weightKg: form.weightKg ? Number(form.weightKg) : undefined,
+        heightCm: form.heightCm ? Number(form.heightCm) : undefined,
+        widthCm: form.widthCm ? Number(form.widthCm) : undefined,
+        lengthCm: form.lengthCm ? Number(form.lengthCm) : undefined,
       });
 
       if (result.success) {
@@ -92,7 +109,7 @@ export function EditProductDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Editar produto</DialogTitle>
         </DialogHeader>
@@ -149,6 +166,81 @@ export function EditProductDialog({
               value={form.images}
               onChange={(next) => setForm({ ...form, images: next })}
             />
+          </div>
+
+          <Separator />
+
+          <div className="flex flex-col gap-1.5">
+            <Label>Peso e dimensões (para cálculo de frete)</Label>
+            <p className="text-muted-foreground text-xs">
+              Medidas da caixa/embalagem, não do produto solto.
+            </p>
+            <div className="mt-1 grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="weightKg" className="font-normal text-xs">
+                  Peso (kg)
+                </Label>
+                <Input
+                  id="weightKg"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="2.5"
+                  value={form.weightKg}
+                  onChange={(e) =>
+                    setForm({ ...form, weightKg: e.target.value })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="heightCm" className="font-normal text-xs">
+                  Altura (cm)
+                </Label>
+                <Input
+                  id="heightCm"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  placeholder="40"
+                  value={form.heightCm}
+                  onChange={(e) =>
+                    setForm({ ...form, heightCm: e.target.value })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="widthCm" className="font-normal text-xs">
+                  Largura (cm)
+                </Label>
+                <Input
+                  id="widthCm"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  placeholder="30"
+                  value={form.widthCm}
+                  onChange={(e) =>
+                    setForm({ ...form, widthCm: e.target.value })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="lengthCm" className="font-normal text-xs">
+                  Comprimento (cm)
+                </Label>
+                <Input
+                  id="lengthCm"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  placeholder="50"
+                  value={form.lengthCm}
+                  onChange={(e) =>
+                    setForm({ ...form, lengthCm: e.target.value })
+                  }
+                />
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center justify-between rounded-lg border border-border p-3">
