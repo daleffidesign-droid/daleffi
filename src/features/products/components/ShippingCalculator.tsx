@@ -13,8 +13,9 @@ import {
 
 function formatCep(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 8);
-  if (digits.length <= 5) return digits;
-  return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  return digits.length <= 5
+    ? digits
+    : `${digits.slice(0, 5)}-${digits.slice(5)}`;
 }
 
 export function ShippingCalculator({ productId }: { productId: string }) {
@@ -24,29 +25,28 @@ export function ShippingCalculator({ productId }: { productId: string }) {
   });
   const [isPending, startTransition] = useTransition();
 
-  function handleCalculate() {
-    setState({ status: "loading" });
-    startTransition(async () => {
-      const result = await calculateShipping({
-        productId,
-        destinationCep: cep,
-      });
-      setState(result);
-    });
-  }
-
   const currency = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
 
+  function handleCalculate() {
+    setState({ status: "loading" });
+    startTransition(async () => {
+      setState(await calculateShipping({ productId, destinationCep: cep }));
+    });
+  }
+
   return (
     <div className="flex flex-col gap-3 border-border border-t pt-5">
-      <Label htmlFor="shipping-cep" className="text-xs uppercase tracking-[0.15em]">
+      <Label
+        htmlFor="shipping-cep"
+        className="text-xs uppercase tracking-[0.15em]"
+      >
         Calcular frete
       </Label>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Input
           id="shipping-cep"
           inputMode="numeric"
@@ -59,6 +59,7 @@ export function ShippingCalculator({ productId }: { productId: string }) {
         <Button
           type="button"
           variant="outline"
+          className="h-9"
           disabled={cep.replace(/\D/g, "").length !== 8 || isPending}
           onClick={handleCalculate}
         >
@@ -75,6 +76,7 @@ export function ShippingCalculator({ productId }: { productId: string }) {
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
         </div>
       )}
 
@@ -86,7 +88,7 @@ export function ShippingCalculator({ productId }: { productId: string }) {
         <div className="flex flex-col gap-2">
           {state.quotes.map((quote) => (
             <div
-              key={quote.carrier}
+              key={`${quote.carrier}-${quote.id}`}
               className="flex items-center justify-between border border-border p-3"
             >
               <div className="flex items-center gap-2.5">

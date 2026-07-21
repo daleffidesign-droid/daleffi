@@ -3,9 +3,6 @@
 import { z } from "zod";
 import { db } from "@/prisma";
 
-const MELHOR_ENVIO_BASE_URL =
-  process.env.MELHOR_ENVIO_BASE_URL ?? "https://sandbox.melhorenvio.com.br";
-
 const calculateShippingSchema = z.object({
   productId: z.string().uuid(),
   destinationCep: z
@@ -16,10 +13,12 @@ const calculateShippingSchema = z.object({
 });
 
 export type ShippingQuote = {
+  id: number;
   carrier: string;
   service: string;
   price: number;
   deliveryDays: number | null;
+  error?: string;
 };
 
 export type ShippingCalculationState =
@@ -28,15 +27,10 @@ export type ShippingCalculationState =
   | { status: "success"; quotes: ShippingQuote[] }
   | { status: "error"; message: string };
 
-// Transportadoras que queremos exibir, na ordem desejada.
-// A API retorna vários serviços; filtramos e pegamos o mais barato de cada uma.
-const TARGET_CARRIERS = ["Correios", "Jadlog", "Buslog"];
-
 export async function calculateShipping(
   input: z.input<typeof calculateShippingSchema>,
 ): Promise<ShippingCalculationState> {
   const parsed = calculateShippingSchema.safeParse(input);
-
   if (!parsed.success) {
     return {
       status: "error",
@@ -49,6 +43,7 @@ export async function calculateShipping(
   const product = await db.product.findUnique({
     where: { id: productId },
     select: {
+      title: true,
       weightKg: true,
       heightCm: true,
       widthCm: true,
@@ -69,15 +64,15 @@ export async function calculateShipping(
   ) {
     return {
       status: "error",
-      message:
-        "Este produto ainda não tem peso e dimensões cadastrados. Fale com a loja para calcular o frete.",
+      message: "Este produto ainda não tem peso e dimensões cadastrados.",
     };
   }
 
   const originCep = process.env.STORE_ORIGIN_CEP;
   const token = process.env.MELHOR_ENVIO_TOKEN;
+  const baseUrl = process.env.MELHOR_ENVIO_BASE_URL;
 
-  if (!originCep || !token) {
+  if (!originCep || !token || !baseUrl) {
     return {
       status: "error",
       message: "Cálculo de frete indisponível no momento.",
@@ -85,39 +80,37 @@ export async function calculateShipping(
   }
 
   try {
-    const response = await fetch(
-      `${MELHOR_ENVIO_BASE_URL}/api/v2/me/shipment/calculate`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          "User-Agent": `${process.env.MELHOR_ENVIO_APP_NAME ?? "App"} (${process.env.MELHOR_ENVIO_APP_EMAIL ?? "contato@example.com"})`,
-        },
-        body: JSON.stringify({
-          from: { postal_code: originCep },
-          to: { postal_code: destinationCep },
-          package: {
-            weight: product.weightKg,
+    const response = await fetch(`${baseUrl}/api/v2/me/shipment/calculate`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "User-Agent": `${process.env.MELHOR_ENVIO_APP_NAME} (${process.env.MELHOR_ENVIO_APP_EMAIL})`,
+      },
+      body: JSON.stringify({
+        from: { postal_code: originCep },
+        to: { postal_code: destinationCep },
+        products: [
+          {
+            id: product.title,
             width: product.widthCm,
             height: product.heightCm,
             length: product.lengthCm,
-          },
-          options: {
+            weight: product.weightKg,
             insurance_value: Number(product.price),
-            receipt: false,
-            own_hand: false,
+            quantity: 1,
           },
-        }),
-        cache: "no-store",
-      },
-    );
+        ],
+        options: { receipt: false, own_hand: false },
+      }),
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       return {
         status: "error",
-        message: "Não foi possível calcular o frete agora. Tente novamente.",
+        message: "Não foi possível calcular o frete agora.",
       };
     }
 
@@ -130,36 +123,16 @@ export async function calculateShipping(
       };
     }
 
-    const validResults = data.filter(
-      (item) => !item.error && typeof item.price !== "undefined",
-    );
-
-    const quotesByCarrier = new Map<string, ShippingQuote>();
-
-    for (const item of validResults) {
-      const carrierName: string = item.company?.name ?? "Transportadora";
-      const matchesTarget = TARGET_CARRIERS.some((target) =>
-        carrierName.toLowerCase().includes(target.toLowerCase()),
-      );
-
-      if (!matchesTarget) continue;
-
-      const price = Number(item.price);
-      const existing = quotesByCarrier.get(carrierName);
-
-      if (!existing || price < existing.price) {
-        quotesByCarrier.set(carrierName, {
-          carrier: carrierName,
-          service: item.name ?? carrierName,
-          price,
-          deliveryDays: item.delivery_time?.days ?? null,
-        });
-      }
-    }
-
-    const quotes = Array.from(quotesByCarrier.values())
-      .sort((a, b) => a.price - b.price)
-      .slice(0, 3);
+    const quotes: ShippingQuote[] = data
+      .filter((item) => !item.error && typeof item.price !== "undefined")
+      .map((item) => ({
+        id: item.id,
+        carrier: item.company?.name ?? "Transportadora",
+        service: item.name ?? "",
+        price: Number(item.custom_price ?? item.price),
+        deliveryDays: item.delivery_time?.days ?? null,
+      }))
+      .sort((a, b) => a.price - b.price);
 
     if (quotes.length === 0) {
       return {
