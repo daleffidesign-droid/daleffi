@@ -62,7 +62,7 @@ export default async function PublicHeader() {
         <div className="hidden sm:block">
           <Button
             size="sm"
-            className="h-8 bg-[var(--gold)] text-black hover:bg-[var(--gold)]/90"
+            className="h-10 bg-[var(--gold)] text-black hover:bg-[var(--gold)]/90 text-sm"
             render={<Link href="/catalogo">Ver catálogo</Link>}
           />
         </div>

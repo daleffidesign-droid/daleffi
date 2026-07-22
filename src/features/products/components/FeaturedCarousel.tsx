@@ -95,14 +95,14 @@ export function FeaturedCarousel({
             key={`${product.id}-${index}`}
             ref={index === products.length ? markerRef : undefined}
             href={`/catalogo/${product.id}`}
-            className="group relative aspect-[3/4] w-[220px] flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] sm:w-[260px]"
+            className="group relative aspect-[3/4] w-[260px] flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] sm:w-[340px]"
           >
             {product.imageUrl ? (
               <Image
                 src={product.imageUrl}
                 alt={product.title}
                 fill
-                sizes="260px"
+                sizes="340px"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
             ) : (
@@ -110,11 +110,11 @@ export function FeaturedCarousel({
                 <ImageIcon className="h-8 w-8 text-white/20" />
               </div>
             )}
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 pt-10">
-              <p className="truncate font-medium text-sm text-white">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-5 pt-12">
+              <p className="truncate font-medium text-base text-white">
                 {product.title}
               </p>
-              <p className="text-[var(--gold)] text-xs">
+              <p className="text-[var(--gold)] text-sm">
                 {currency.format(product.price)}
               </p>
             </div>

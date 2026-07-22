@@ -9,6 +9,7 @@ import {
   Package,
   Users,
   Loader2,
+  Truck,
 } from "lucide-react";
 import Image from "next/image";
 import {
@@ -32,6 +33,7 @@ const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Produtos", href: "/products", icon: Package },
   { label: "Equipe", href: "/team", icon: Users },
+  { label: "Fretes", href: "/shipping", icon: Truck },
 ];
 
 const systemItems = [

@@ -21,7 +21,8 @@ export function ProductPurchaseActions({
     <div className="mt-2 flex flex-col gap-3">
       <Button
         size="lg"
-        className="flex-1 py-2 bg-[#25D366] text-white hover:bg-[#1ea952]"
+        nativeButton={false}
+        className="flex-1 py-3 bg-[#25D366] text-white hover:bg-[#1ea952]"
         render={
           <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
             <Image
@@ -39,7 +40,8 @@ export function ProductPurchaseActions({
         <Button
           size="lg"
           variant="outline"
-          className="flex-1 py-2 bg-[#FFE600] hover:bg-[#FFE600]/80 text-[#2F3476] font-bold"
+          nativeButton={false}
+          className="flex-1 py-3 bg-[#FFE600] hover:bg-[#FFE600]/80 text-[#2F3476] font-bold"
           render={
             <a
               href={product.mercadoLivreLink}

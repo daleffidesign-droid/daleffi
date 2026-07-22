@@ -74,7 +74,7 @@ export default async function Home() {
       {featuredProducts.length > 0 && (
         <section
           id="destaques"
-          className="border-b border-white/10 py-16 sm:py-20"
+          className="border-b border-white/10 py-20 sm:py-24"
         >
           <div className="mx-auto mb-8 flex max-w-6xl flex-col gap-4 px-4 sm:flex-row sm:items-end sm:justify-between sm:px-6">
             <div>

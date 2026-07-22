@@ -18,13 +18,23 @@ export type ShippingQuote = {
   service: string;
   price: number;
   deliveryDays: number | null;
-  error?: string;
+};
+
+export type ExcludedShipping = {
+  id: number | string;
+  carrier: string;
+  service: string;
+  reason: string;
 };
 
 export type ShippingCalculationState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "success"; quotes: ShippingQuote[] }
+  | {
+      status: "success";
+      quotes: ShippingQuote[];
+      excluded: ExcludedShipping[];
+    }
   | { status: "error"; message: string };
 
 export async function calculateShipping(
@@ -123,25 +133,37 @@ export async function calculateShipping(
       };
     }
 
-    const quotes: ShippingQuote[] = data
-      .filter((item) => !item.error && typeof item.price !== "undefined")
-      .map((item) => ({
+    const quotes: ShippingQuote[] = [];
+    const excluded: ExcludedShipping[] = [];
+
+    for (const item of data) {
+      const carrier = item.company?.name ?? "Transportadora";
+      const service = item.name ?? "";
+
+      if (item.error) {
+        excluded.push({
+          id: item.id ?? `${carrier}-${service}`,
+          carrier,
+          service,
+          reason: String(item.error),
+        });
+        continue;
+      }
+
+      if (typeof item.price === "undefined") continue;
+
+      quotes.push({
         id: item.id,
-        carrier: item.company?.name ?? "Transportadora",
-        service: item.name ?? "",
+        carrier,
+        service,
         price: Number(item.custom_price ?? item.price),
         deliveryDays: item.delivery_time?.days ?? null,
-      }))
-      .sort((a, b) => a.price - b.price);
-
-    if (quotes.length === 0) {
-      return {
-        status: "error",
-        message: "Nenhuma transportadora atende esse CEP no momento.",
-      };
+      });
     }
 
-    return { status: "success", quotes };
+    quotes.sort((a, b) => a.price - b.price);
+
+    return { status: "success", quotes, excluded };
   } catch {
     return {
       status: "error",

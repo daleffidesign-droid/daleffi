@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Loader2, PackageCheck, Truck } from "lucide-react";
+import { Loader2, PackageCheck, PackageX, Truck } from "lucide-react";
 import { Button } from "@/src/shared/components/ui/button";
 import { Input } from "@/src/shared/components/ui/input";
 import { Label } from "@/src/shared/components/ui/label";
@@ -46,7 +46,7 @@ export function ShippingCalculator({ productId }: { productId: string }) {
         Calcular frete
       </Label>
 
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <Input
           id="shipping-cep"
           inputMode="numeric"
@@ -76,7 +76,6 @@ export function ShippingCalculator({ productId }: { productId: string }) {
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-12 w-full" />
         </div>
       )}
 
@@ -84,7 +83,14 @@ export function ShippingCalculator({ productId }: { productId: string }) {
         <p className="text-destructive text-xs">{state.message}</p>
       )}
 
-      {state.status === "success" && (
+      {state.status === "success" && state.quotes.length === 0 && (
+        <p className="inline-flex items-center gap-1.5 text-muted-foreground text-xs">
+          <PackageX className="h-3.5 w-3.5" />
+          Não há opções de frete disponíveis para esse CEP no momento.
+        </p>
+      )}
+
+      {state.status === "success" && state.quotes.length > 0 && (
         <div className="flex flex-col gap-2">
           {state.quotes.map((quote) => (
             <div
