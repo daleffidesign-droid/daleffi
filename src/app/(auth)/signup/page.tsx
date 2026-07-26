@@ -1,10 +1,11 @@
-import Link from "next/link";
-import { SignUpForm } from "@/src/features/auth/components/Signup";
-import { AuthLayout } from "@/src/features/auth/components/AuthLayout";
+import { redirect } from "next/navigation";
 
 export default function SignUpPage() {
-  return (
-    <AuthLayout
+  redirect("/signin");
+
+  return null;
+
+  /*<AuthLayout
       title="Criar conta de equipe"
       subtitle="Cadastre um novo administrador ou vendedor."
     >
@@ -16,6 +17,5 @@ export default function SignUpPage() {
           Entrar
         </Link>
       </p>
-    </AuthLayout>
-  );
+    </AuthLayout>*/
 }
