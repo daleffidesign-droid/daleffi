@@ -58,7 +58,7 @@ export default async function ProductDetailPage({
         <span>{serializedProduct.category.name}</span>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-[1fr_380px] lg:gap-16">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,560px)_380px] lg:justify-center lg:gap-16">
         <div className="flex animate-in flex-col gap-8 fade-in slide-in-from-bottom-2 duration-700">
           <ProductGallery
             images={serializedProduct.images}
